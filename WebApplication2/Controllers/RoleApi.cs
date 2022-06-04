@@ -79,8 +79,10 @@ namespace WebApplication2.Controllers
         {
             var role = _context.Role.Where(x => x.Id == id).FirstOrDefault();
             if (role != null) {
-                body.Id = role.Id;
-                role = body;
+                
+                role.IsAdmin = body.IsAdmin;
+                role.Range = body.Range;
+                role.Bonuses = body.Bonuses;
                 _context.Role.Update(role);
                 return StatusCode(200);
             }
