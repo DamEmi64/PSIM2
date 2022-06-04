@@ -44,12 +44,15 @@ namespace IO.Swagger.Controllers
         [HttpPost]
         [Route("/register")]
         [ValidateModelState]
-        public virtual IActionResult CreateUser([FromBody]User uytkownik)
+        public virtual IActionResult CreateUser([FromBody] User uytkownik)
         {
+            /*_context.User.Add(new User() { Login = "jp2", Email = "pope@21.37", Role = 1, Password = "123", Name = "Karol", Surname = "Wojtyła", Locaction = "Watykan city" });
+            _context.SaveChanges();
+            return StatusCode(200, "done");*/
             if (ModelState.IsValid)
             {
                 uytkownik.Id = null;
-                _context.Add(uytkownik);
+                _context.User.Add(uytkownik);
                 _context.SaveChanges();
                 return StatusCode(200);
             }

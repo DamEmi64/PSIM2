@@ -18,6 +18,9 @@ using IO.Swagger.Attributes;
 using IO.Swagger.Security;
 using Microsoft.AspNetCore.Authorization;
 using WebApplication2.Models;
+using WebApplication2.Data;
+using System.Linq;
+using PSIM2.Security;
 
 namespace WebApplication2.Controllers
 { 
@@ -26,7 +29,14 @@ namespace WebApplication2.Controllers
     /// </summary>
     [ApiController]
     public class AuthorizationApiController : ControllerBase
-    { 
+    {
+
+        private readonly WebApplication2Context _context;
+
+        public AuthorizationApiController(WebApplication2Context context)
+        {
+            _context = context;
+        }
         /// <summary>
         /// Log in and get a token
         /// </summary>
@@ -39,21 +49,21 @@ namespace WebApplication2.Controllers
         [ValidateModelState]
         public virtual IActionResult Login([FromBody]Login login)
         {   
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(string));
-
-            //TODO: Uncomment the next line to return response 405 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(405);
-
-            string exampleJson = null;
-            exampleJson = "aeiou";
-            exampleJson = "{\n  \"bytes\": [],\n  \"empty\": true\n}";
-            
-            var example = exampleJson != null
-            ? JsonConvert.DeserializeObject<string>(exampleJson)
-            : default(string);
-            //TODO: Change the data returned
-            return new ObjectResult(example);
+            if (login == null || login._Login == null || login._Login == null || login._Login == "" || login.Password == "")
+            {
+                return StatusCode(400, "Bad login details");
+            }
+            User user = _context.User.FirstOrDefault(user => user.Login == login._Login);
+            if (user == null || user.Password != login.Password)
+            {
+                return StatusCode(404, "User not found");
+            }
+            else
+            {
+                string token = TokenManager.GenerateAccessToken(user.Id);
+                Response.Headers.Add("token", token);
+                return StatusCode(200, "Succesfully logged in");
+            }
         }
 
         /// <summary>
@@ -66,12 +76,8 @@ namespace WebApplication2.Controllers
         [Route("/logout")]
         [ValidateModelState]
         public virtual IActionResult Logout([FromQuery][Required()]string token)
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200);
-
-
-            throw new NotImplementedException();
+        {
+            return StatusCode(200, "Succesfully logged out. It is done by frontend though...");
         }
     }
 }

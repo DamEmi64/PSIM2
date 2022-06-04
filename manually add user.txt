@@ -1,0 +1,2 @@
+INSERT INTO dbo.[User](Login, Password, Name, Surname, Email, Locaction, Role)
+VALUES ('a', '123', 'a', 'a', 'a@a.a', 'a', 1);
