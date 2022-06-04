@@ -103,7 +103,21 @@ namespace IO.Swagger.Controllers
         [Route("/User/edit/{User_ID_edit}")]
         [ValidateModelState]
         public virtual IActionResult Editinfo([FromRoute][Required]int? userIDEdit, [FromHeader][Required()]string token, [FromBody]UserChange userChange)
-        { 
+        {
+            var user = _context.User.Where(x => x.Id == userIDEdit).FirstOrDefault();
+            if (user != null) {
+                user.Login = userChange.Login;
+                user.Password = userChange.Passowrd;
+                user.Locaction = userChange.Locaction;
+                user.Role = userChange.Role;
+                user.Surname = userChange.Surname;
+                user.Name = userChange.Name;
+                user.Email = userChange.Email;
+                _context.User.Update(user);
+                _context.SaveChanges();
+                return StatusCode(0);
+
+            }
             //TODO: Uncomment the next line to return response 401 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(401);
 

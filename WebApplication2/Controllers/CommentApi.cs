@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using WebApplication2.Models;
 using WebApplication2.Data;
+using System.Linq;
 
 namespace WebApplication2.Controllers
 {
@@ -40,7 +41,7 @@ namespace WebApplication2.Controllers
         [HttpGet]
         [Route("/Comment/{Comment_ID}")]
         public virtual IActionResult CommentCommentIDGet([FromRoute][Required] int? commentID, [FromHeader][Required()] string token)
-        {
+        {   
 
             //TODO: Uncomment the next line to return response 401 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(401);
@@ -65,11 +66,19 @@ namespace WebApplication2.Controllers
         [Route("/comment/edit/{Comment_ID}")]
         public virtual IActionResult CommentEditCommentIDPut([FromRoute][Required] int? commentID, [FromHeader][Required()] string token, [FromBody] CommentChange commentChange)
         {
+            var comment = _context.Comment.Where(x => x.Id == commentID).FirstOrDefault();
+            if (comment!=null)
+            {
+                comment.Text = commentChange.Text;
+                _context.Comment.Update(comment);
+                _context.SaveChanges();
+                return StatusCode(0);
+            }
             //TODO: Uncomment the next line to return response 401 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(401);
 
             //TODO: Uncomment the next line to return response 0 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(0);
+            // 
 
 
             throw new NotImplementedException();
