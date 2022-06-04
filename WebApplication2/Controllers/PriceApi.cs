@@ -17,6 +17,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using WebApplication2.Models;
 using WebApplication2.Data;
+using System.Linq;
 
 namespace IO.Swagger.Controllers
 {
@@ -64,7 +65,7 @@ namespace IO.Swagger.Controllers
         {
             //TODO NAPRAWIC
             _context.History.Add(prize);
-           // _context.SaveChanges();
+            _context.SaveChanges();
             //TODO: Uncomment the next line to return response 0 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(0, default(History));
 
@@ -83,12 +84,19 @@ namespace IO.Swagger.Controllers
         /// Upload price of fuel in the station
         /// </summary>
         /// <remarks>Dodaje koszt paliwa na stacji</remarks>
-        /// <param name="price_id"></param>
+        /// /// <param name="user_id"></param>
+        /// <param name="station_id"></param>
         /// <response code="0">successful operation</response>
         [HttpDelete]
-        [Route("/price/remove/{price_id}")]
-        public virtual IActionResult RemovePrice([FromRoute][Required] int? price_id)
+        [Route("/price/remove/{user_id}_{station_id}")]
+        public virtual IActionResult RemovePrice([FromRoute][Required] int? user_id, [FromRoute][Required] int? station_id)
         {
+            var price = _context.History.Where(x => x.UserID == user_id && x.StationID==station_id).FirstOrDefault();
+            if (price != null) {
+                _context.History.Remove(price);
+                _context.SaveChanges();
+                return StatusCode(0);
+            }
             //TODO: Uncomment the next line to return response 0 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(0);
 

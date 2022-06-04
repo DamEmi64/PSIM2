@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Authorization;
 
 using WebApplication2.Models;
 using WebApplication2.Data;
+using System.Linq;
 
 namespace WebApplication2.Controllers
 { 
@@ -78,7 +79,7 @@ namespace WebApplication2.Controllers
         [HttpPut]
         [Route("/Station/edit/{id}")]
         public virtual IActionResult EditStation([FromRoute][Required] int? id, [FromBody] Station body)
-        {
+        {    
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(200);
 
@@ -104,6 +105,13 @@ namespace WebApplication2.Controllers
         [Route("/Station/remove/{id}")]
         public virtual IActionResult RemoveStation([FromRoute][Required] int? id)
         {
+            var station = _context.Station.Where(x => x.Id == id).FirstOrDefault();
+            if (station!=null)
+            {
+                _context.Station.Remove(station);
+                _context.SaveChanges();
+                return StatusCode(200);
+            }
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(200);
 

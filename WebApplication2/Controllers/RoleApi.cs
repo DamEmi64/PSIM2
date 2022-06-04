@@ -18,6 +18,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using WebApplication2.Models;
 using WebApplication2.Data;
+using System.Linq;
 
 namespace WebApplication2.Controllers
 {
@@ -101,6 +102,13 @@ namespace WebApplication2.Controllers
         [Route("/Role/remove/{id}")]
         public virtual IActionResult RemoveTag([FromRoute][Required] long? id)
         {
+            var tag = _context.Role.Where(x => x.Id == id).FirstOrDefault();
+            if (tag!=null)
+            {
+                _context.Role.Remove(tag);
+                _context.SaveChanges();
+                return StatusCode(200);
+            }
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(200);
 

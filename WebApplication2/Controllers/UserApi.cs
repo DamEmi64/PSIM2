@@ -19,6 +19,7 @@ using IO.Swagger.Security;
 using Microsoft.AspNetCore.Authorization;
 using WebApplication2.Models;
 using WebApplication2.Data;
+using System.Linq;
 
 namespace IO.Swagger.Controllers
 { 
@@ -71,7 +72,14 @@ namespace IO.Swagger.Controllers
         [Route("/User/remove/{User_ID}")]
         [ValidateModelState]
         public virtual IActionResult Delinfo([FromRoute][Required]int? userID, [FromHeader][Required()]string token)
-        { 
+        {
+            var user = _context.User.Where(x => x.Id == userID).FirstOrDefault();
+            if (user != null) {
+                _context.User.Remove(user);
+                _context.SaveChanges();
+                return StatusCode(200);
+            }
+
             //TODO: Uncomment the next line to return response 401 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(401);
 
@@ -118,7 +126,11 @@ namespace IO.Swagger.Controllers
         [Route("/User/{User_ID}")]
         [ValidateModelState]
         public virtual IActionResult Showinfo([FromRoute][Required]int? userID, [FromHeader][Required()]string token)
-        { 
+        {
+            var user = _context.User.Where(x=>x.Id==userID).FirstOrDefault();
+            if (user != null) {
+                return StatusCode(200);
+            }
             //TODO: Uncomment the next line to return response 401 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(401);
 
