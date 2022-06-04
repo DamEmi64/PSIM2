@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication2.Data;
 
 namespace WebApplication2.Migrations
 {
     [DbContext(typeof(WebApplication2Context))]
-    partial class WebApplication2ContextModelSnapshot : ModelSnapshot
+    [Migration("20220604122229_History")]
+    partial class History
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,48 +40,6 @@ namespace WebApplication2.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Comment");
-                });
-
-            modelBuilder.Entity("WebApplication2.Models.FuelAvaliability", b =>
-                {
-                    b.Property<int?>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool?>("Avaliable95")
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("Avaliable98")
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("AvaliableDiesel")
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("AvaliableLPG")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("FuelAvaliability");
-                });
-
-            modelBuilder.Entity("WebApplication2.Models.FuelGrade", b =>
-                {
-                    b.Property<long?>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("Dislikes")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Likes")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("FuelGrade");
                 });
 
             modelBuilder.Entity("WebApplication2.Models.History", b =>
@@ -115,27 +75,6 @@ namespace WebApplication2.Migrations
                     b.HasKey("UserID", "StationID");
 
                     b.ToTable("History");
-                });
-
-            modelBuilder.Entity("WebApplication2.Models.Role", b =>
-                {
-                    b.Property<long?>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Bonuses")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool?>("IsAdmin")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("Range")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Role");
                 });
 
             modelBuilder.Entity("WebApplication2.Models.Station", b =>

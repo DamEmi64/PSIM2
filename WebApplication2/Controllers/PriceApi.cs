@@ -16,6 +16,7 @@ using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using WebApplication2.Models;
+using WebApplication2.Data;
 
 namespace IO.Swagger.Controllers
 {
@@ -25,6 +26,12 @@ namespace IO.Swagger.Controllers
     [ApiController]
     public class PriceController : ControllerBase
     {
+        private readonly WebApplication2Context _context;
+
+        public PriceController(WebApplication2Context context)
+        {
+            _context = context;
+        }
         /// <summary>
         /// Upload price of fuel in the station
         /// </summary>
@@ -35,7 +42,7 @@ namespace IO.Swagger.Controllers
         [HttpPut]
         [Route("/price/edit/{price_id}")]
         public virtual IActionResult EditPrice([FromRoute][Required] int? price_id, [FromBody] History price)
-        {
+        {  
             //TODO: Uncomment the next line to return response 0 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(0);
 
@@ -55,6 +62,9 @@ namespace IO.Swagger.Controllers
         [Route("/{User_ID}/price/{Fuel_price_ID}")]
         public virtual IActionResult PostPrize([FromRoute][Required] int? Fuel_price_ID, [FromRoute][Required] int? User_ID, [FromBody] History prize)
         {
+            //TODO NAPRAWIC
+            _context.History.Add(prize);
+           // _context.SaveChanges();
             //TODO: Uncomment the next line to return response 0 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(0, default(History));
 

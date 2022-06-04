@@ -17,6 +17,7 @@ using System.ComponentModel.DataAnnotations;
 
 using Microsoft.AspNetCore.Authorization;
 using WebApplication2.Models;
+using WebApplication2.Data;
 
 namespace WebApplication2.Controllers
 {
@@ -26,6 +27,13 @@ namespace WebApplication2.Controllers
     [ApiController]
     public class RoleController : ControllerBase
     {
+        private readonly WebApplication2Context _context;
+
+        public RoleController(WebApplication2Context context)
+        {
+            _context = context;
+        }
+
         /// <summary>
         /// Add a new tag
         /// </summary>
@@ -38,8 +46,12 @@ namespace WebApplication2.Controllers
         [Route("/Role/new")]
         public virtual IActionResult AddTag([FromBody] Role body)
         {
+            body.Id = null;
+            _context.Role.Add(body);
+            _context.SaveChanges();
+
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200);
+             return StatusCode(200);
 
             //TODO: Uncomment the next line to return response 401 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(401);

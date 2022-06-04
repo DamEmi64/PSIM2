@@ -20,6 +20,7 @@ using IO.Swagger.Security;
 using Microsoft.AspNetCore.Authorization;
 
 using WebApplication2.Models;
+using WebApplication2.Data;
 
 namespace WebApplication2.Controllers
 { 
@@ -30,6 +31,12 @@ namespace WebApplication2.Controllers
     [ApiController]
     public class StationController : ControllerBase
     {
+        private readonly WebApplication2Context _context;
+
+        public StationController(WebApplication2Context context)
+        {
+            _context = context;
+        }
         /// <summary>
         /// Add a new gas Station to the database
         /// </summary>
@@ -42,8 +49,12 @@ namespace WebApplication2.Controllers
         [Route("/Station/new")]
         public virtual IActionResult AddStation([FromBody] Station body)
         {
+            body.Id = null;
+            _context.Station.Add(body);
+            _context.SaveChanges();
+
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200);
+             return StatusCode(200);
 
             //TODO: Uncomment the next line to return response 401 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(401);

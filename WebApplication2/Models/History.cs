@@ -18,6 +18,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApplication2.Models
 { 
@@ -32,7 +33,7 @@ namespace WebApplication2.Models
         /// </summary>
         /// <value>Commented station</value>
         [Required]
-        
+        [Key]
         [DataMember(Name="Station_ID")]
         public int? StationID { get; set; }
 
@@ -40,7 +41,7 @@ namespace WebApplication2.Models
         /// Users key
         /// </summary>
         /// <value>Users key</value>
-
+        [Key]
         [DataMember(Name="User_ID")]
         public int? UserID { get; set; }
 
@@ -50,7 +51,7 @@ namespace WebApplication2.Models
         /// <value>Fuel avaliability key</value>
         [Required]
         
-        [DataMember(Name="Fuel_avaliability_ID")]
+        [DataMember(Name= "FuelAvaliabilityID")]
         public int? FuelAvaliabilityID { get; set; }
 
         /// <summary>

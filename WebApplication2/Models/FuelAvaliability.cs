@@ -30,6 +30,8 @@ namespace WebApplication2.Models
         /// <summary>
         /// Gets or Sets Avaliable95
         /// </summary>
+        [Key]
+        public int? Id { get; set; }
 
         [DataMember(Name="avaliable_95")]
         public bool? Avaliable95 { get; set; }
