@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Authorization;
 using WebApplication2.Models;
 using WebApplication2.Data;
 using System.Linq;
+using PSIM2.Security;
 
 namespace IO.Swagger.Controllers
 { 
@@ -52,6 +53,7 @@ namespace IO.Swagger.Controllers
             if (ModelState.IsValid)
             {
                 uytkownik.Id = null;
+                uytkownik.Role = _context.Role.Where(x => x.Id == uytkownik.Role.Id).FirstOrDefault();
                 _context.User.Add(uytkownik);
                 _context.SaveChanges();
                 return StatusCode(200);
@@ -72,7 +74,7 @@ namespace IO.Swagger.Controllers
         /// <response code="401">Not authenticated</response>
         /// <response code="0">successful operation</response>
         [HttpDelete]
-        [Route("/User/remove/{User_ID}")]
+        [Route("/User/remove/{userID}")]
         [ValidateModelState]
         public virtual IActionResult Delinfo([FromRoute][Required]int? userID, [FromHeader][Required()]string token)
         {
@@ -103,7 +105,7 @@ namespace IO.Swagger.Controllers
         /// <response code="401">Not authenticated</response>
         /// <response code="0">successful operation</response>
         [HttpPut]
-        [Route("/User/edit/{User_ID_edit}")]
+        [Route("/User/edit/{userIDEdit}")]
         [ValidateModelState]
         public virtual IActionResult Editinfo([FromRoute][Required]int? userIDEdit, [FromHeader][Required()]string token, [FromBody]UserChange userChange)
         {

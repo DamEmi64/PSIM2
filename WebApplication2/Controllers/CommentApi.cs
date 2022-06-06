@@ -69,6 +69,8 @@ namespace WebApplication2.Controllers
             var comment = _context.Comment.Where(x => x.Id == commentID).FirstOrDefault();
             if (comment!=null)
             {
+                comment.Station = _context.Station.Where(x => x.Id == comment.Station.Id).FirstOrDefault();
+                comment.User = _context.User.Where(x => x.Id == comment.User.Id).FirstOrDefault();
                 comment.Text = commentChange.Text;
                 _context.Comment.Update(comment);
                 _context.SaveChanges();
@@ -100,6 +102,8 @@ namespace WebApplication2.Controllers
             if (ModelState.IsValid)
             {
                 comment.Id = null;
+                comment.Station = _context.Station.Where(x => x.Id == comment.Station.Id).FirstOrDefault();
+                comment.User = _context.User.Where(x => x.Id == comment.User.Id).FirstOrDefault();
                 _context.Add(comment);
                 _context.SaveChanges();
                 return StatusCode(0);

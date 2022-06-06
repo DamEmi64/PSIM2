@@ -84,6 +84,7 @@ namespace WebApplication2.Controllers
                 role.Range = body.Range;
                 role.Bonuses = body.Bonuses;
                 _context.Role.Update(role);
+                _context.SaveChanges();
                 return StatusCode(200);
             }
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
