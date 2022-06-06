@@ -129,14 +129,23 @@ namespace WebApplication2.Controllers
         /// show commentary about station
         /// </summary>
 
-        /// <param name="id">id stacji</param>
+        /// <param name="stationID">id stacji</param>
         /// <response code="200">Succesfull operation</response>
         /// <response code="401">Not authenticated</response>
         /// <response code="405">Invalid input</response>
         [HttpGet]
-        [Route("/Station/com/{id}")]
-        public virtual IActionResult ShowComments([FromRoute][Required] int? id)
+        [Route("/Station/com/{stationID}")]
+        public virtual IActionResult ShowComments([FromRoute][Required] int? stationID)
         {
+            var comments = _context.Comment.Where(x => x.Station.Id == stationID).ToList();
+
+            if (comments != null)
+            {
+                return StatusCode(200);
+            }
+            //TODO: Change the data returned
+            throw new NotImplementedException();
+
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(200, default(Comment));
 
@@ -145,16 +154,6 @@ namespace WebApplication2.Controllers
 
             //TODO: Uncomment the next line to return response 405 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(405);
-
-            string exampleJson = null;
-            exampleJson = "<Fuel_avaliability>\n  <id>123</id>\n  <Station_ID>123456789</Station_ID>\n  <User_ID>123456789</User_ID>\n  <Text>aeiou</Text>\n</Fuel_avaliability>";
-            exampleJson = "{\"empty\": false}";
-
-            var example = exampleJson != null
-            ? JsonConvert.DeserializeObject<Comment>(exampleJson)
-            : default(Comment);
-            //TODO: Change the data returned
-            return new ObjectResult(example);
         }
 
         /// <summary>
@@ -189,27 +188,29 @@ namespace WebApplication2.Controllers
         /// show nearest Station
         /// </summary>
         /// <remarks>Uzyskanie info o najbliższej stacji</remarks>
+        /// <param name="userStreet">Pola użytkownika z nowymi wartościami</param>
         /// <response code="200">Info about station</response>
         /// <response code="403">Not Found</response>
         [HttpGet]
         [Route("/Station/near")]
-        public virtual IActionResult ShownearStation()
+        public virtual IActionResult ShownearStation(String userStreet)
         {
+            var stations = _context.Station.Where(x => userStreet.Contains(x.AdresID.Street)).ToList();
+
+            if (stations != null)
+            {
+                return StatusCode(200);
+            }
+            //TODO: Change the data returned
+            throw new NotImplementedException();
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(200, default(Station));
 
             //TODO: Uncomment the next line to return response 403 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(403);
 
-            string exampleJson = null;
-            exampleJson = "<Station>\n  <id>123456789</id>\n  <Name>Orlen</Name>\n  <Open_hours>8:00 22:00</Open_hours>\n  <Location>93.12421 65.12652</Location>\n  <Adres_ID>12</Adres_ID>\n  <Grade>12</Grade>\n</Station>";
-            exampleJson = "{\"empty\": false}";
-
-            var example = exampleJson != null
-            ? JsonConvert.DeserializeObject<Station>(exampleJson)
-            : default(Station);
             //TODO: Change the data returned
-            return new ObjectResult(example);
+
         }
     }
 }
