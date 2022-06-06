@@ -41,16 +41,16 @@ namespace WebApplication2.Models
         /// <value>Commented station</value>
 
         [DataMember(Name="StationID")]
-        public int? StationID { get; set; }
-      //  public Station station { get; set; }
+       // public int StationID { get; set; }
+        public Station Station { get; set; }
         /// <summary>
         /// Users key
         /// </summary>
         /// <value>Users key</value>
 
         [DataMember(Name="UserID")]
-        public int? UserID { get; set; }
-       // public User user { get; set; }
+       // public int? User { get; set; }
+        public User User { get; set; }
         /// <summary>
         /// Content of comment
         /// </summary>
@@ -68,8 +68,8 @@ namespace WebApplication2.Models
             var sb = new StringBuilder();
             sb.Append("class Comment {\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
-            sb.Append("  StationID: ").Append(StationID).Append("\n");
-            sb.Append("  UserID: ").Append(UserID).Append("\n");
+            sb.Append("  StationID: ").Append(Station.Id).Append("\n");
+            sb.Append("  UserID: ").Append(User.Id).Append("\n");
             sb.Append("  Text: ").Append(Text).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -81,7 +81,8 @@ namespace WebApplication2.Models
         /// <returns>JSON string presentation of the object</returns>
         public string ToJson()
         {
-            return JsonConvert.SerializeObject(this, Formatting.Indented);
+           return this.ToString();
+           //return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
 
         /// <summary>
@@ -113,14 +114,14 @@ namespace WebApplication2.Models
                     Id.Equals(other.Id)
                 ) && 
                 (
-                    StationID == other.StationID ||
-                    StationID != null &&
-                    StationID.Equals(other.StationID)
+                    Station == other.Station ||
+                    Station != null &&
+                    Station.Equals(other.Station)
                 ) && 
                 (
-                    UserID == other.UserID ||
-                    UserID != null &&
-                    UserID.Equals(other.UserID)
+                    User == other.User ||
+                    User != null &&
+                    User.Equals(other.User)
                 ) && 
                 (
                     Text == other.Text ||
@@ -141,10 +142,10 @@ namespace WebApplication2.Models
                 // Suitable nullity checks etc, of course :)
                     if (Id != null)
                     hashCode = hashCode * 59 + Id.GetHashCode();
-                    if (StationID != null)
-                    hashCode = hashCode * 59 + StationID.GetHashCode();
-                    if (UserID != null)
-                    hashCode = hashCode * 59 + UserID.GetHashCode();
+                    if (Station != null)
+                    hashCode = hashCode * 59 + Station.GetHashCode();
+                    if (User != null)
+                    hashCode = hashCode * 59 + User.GetHashCode();
                     if (Text != null)
                     hashCode = hashCode * 59 + Text.GetHashCode();
                 return hashCode;

@@ -68,7 +68,7 @@ namespace WebApplication2.Models
         /// <value>Klucz obcy do roli</value>
 
         [DataMember(Name="Role")]
-        public int? Role { get; set; }
+        public Role Role { get; set; }
 
         /// <summary>
         /// Gets or Sets Locaction
@@ -90,7 +90,7 @@ namespace WebApplication2.Models
             sb.Append("  Surname: ").Append(Surname).Append("\n");
             sb.Append("  Email: ").Append(Email).Append("\n");
             sb.Append("  Passowrd: ").Append(Passowrd).Append("\n");
-            sb.Append("  Role: ").Append(Role).Append("\n");
+            sb.Append("  Role: ").Append(Role.Id).Append("\n");
             sb.Append("  Locaction: ").Append(Locaction).Append("\n");
             sb.Append("}\n");
             return sb.ToString();

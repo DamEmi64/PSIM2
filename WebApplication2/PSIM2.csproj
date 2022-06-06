@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Comments\**" />
+    <Content Remove="Views\Comments\**" />
+    <EmbeddedResource Remove="Views\Comments\**" />
+    <None Remove="Views\Comments\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Controllers\HomeController.cs" />
     <Compile Remove="Migrations\20220604104608_User.cs" />
     <Compile Remove="Migrations\20220604104608_User.Designer.cs" />
@@ -12,6 +19,14 @@
     <Compile Remove="Migrations\20220604111114_Station.Designer.cs" />
     <Compile Remove="Migrations\20220604123608_FuelGrade.cs" />
     <Compile Remove="Migrations\20220604123608_FuelGrade.Designer.cs" />
+    <Compile Remove="Migrations\20220606162927_Migracja.cs" />
+    <Compile Remove="Migrations\20220606162927_Migracja.Designer.cs" />
+    <Compile Remove="Migrations\20220606163224_Migracja.cs" />
+    <Compile Remove="Migrations\20220606163224_Migracja.Designer.cs" />
+    <Compile Remove="Migrations\20220606163509_Migracja.cs" />
+    <Compile Remove="Migrations\20220606163509_Migracja.Designer.cs" />
+    <Compile Remove="Migrations\DataMigrate.cs" />
+    <Compile Remove="Migrations\DataMigrate.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

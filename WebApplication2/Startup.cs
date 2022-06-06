@@ -39,6 +39,7 @@ namespace WebApplication2
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
                 var context = serviceScope.ServiceProvider.GetRequiredService<WebApplication2Context>();
+                
                 context.Database.Migrate();
             }
             // This middleware serves generated Swagger document as a JSON endpoint

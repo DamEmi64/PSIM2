@@ -16,7 +16,7 @@ namespace WebApplication2.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<History>().HasKey(table => new { table.UserID, table.StationID });
+            modelBuilder.Entity<History>().HasKey(table => new { table.User, table.Station });
         }
         public DbSet<WebApplication2.Models.Comment> Comment { get; set; }
         public DbSet<WebApplication2.Models.User> User { get; set; }

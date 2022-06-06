@@ -62,7 +62,7 @@ namespace WebApplication2.Models
         /// </summary>
 
         [DataMember(Name="Adres_ID")]
-        public int? AdresID { get; set; }
+        public Address AdresID { get; set; }
 
         /// <summary>
         /// Gets or Sets Grade

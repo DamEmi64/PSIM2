@@ -91,7 +91,7 @@ namespace IO.Swagger.Controllers
         [Route("/price/remove/{user_id}_{station_id}")]
         public virtual IActionResult RemovePrice([FromRoute][Required] int? user_id, [FromRoute][Required] int? station_id)
         {
-            var price = _context.History.Where(x => x.UserID == user_id && x.StationID==station_id).FirstOrDefault();
+            var price = _context.History.Where(x => x.User == user_id && x.Station==station_id).FirstOrDefault();
             if (price != null) {
                 _context.History.Remove(price);
                 _context.SaveChanges();

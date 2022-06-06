@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication2.Data;
 
-namespace WebApplication2.Migrations
+namespace PSIM2.Migrations
 {
     [DbContext(typeof(WebApplication2Context))]
-    [Migration("20220604123608_FuelGrade")]
-    partial class FuelGrade
+    [Migration("20220606165556_Migracja")]
+    partial class Migracja
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,6 +21,27 @@ namespace WebApplication2.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("WebApplication2.Models.Address", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Street")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StreetNo")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Address");
+                });
+
             modelBuilder.Entity("WebApplication2.Models.Comment", b =>
                 {
                     b.Property<int?>("Id")
@@ -28,16 +49,20 @@ namespace WebApplication2.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("StationID")
-                        .HasColumnType("int");
+                    b.Property<long?>("StationId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserID")
-                        .HasColumnType("int");
+                    b.Property<long?>("UserId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("StationId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Comment");
                 });
@@ -86,10 +111,10 @@ namespace WebApplication2.Migrations
 
             modelBuilder.Entity("WebApplication2.Models.History", b =>
                 {
-                    b.Property<int?>("UserID")
+                    b.Property<int>("User")
                         .HasColumnType("int");
 
-                    b.Property<int?>("StationID")
+                    b.Property<int>("Station")
                         .HasColumnType("int");
 
                     b.Property<string>("Date")
@@ -99,7 +124,10 @@ namespace WebApplication2.Migrations
                         .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<int?>("FuelGradeID")
+                    b.Property<long?>("FuelGradeId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("ID")
                         .HasColumnType("int");
 
                     b.Property<decimal?>("Prize95")
@@ -114,7 +142,9 @@ namespace WebApplication2.Migrations
                     b.Property<decimal?>("PrizeLPG")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("UserID", "StationID");
+                    b.HasKey("User", "Station");
+
+                    b.HasIndex("FuelGradeId");
 
                     b.ToTable("History");
                 });
@@ -147,7 +177,7 @@ namespace WebApplication2.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AdresID")
+                    b.Property<int?>("AdresIDId")
                         .HasColumnType("int");
 
                     b.Property<int?>("Grade")
@@ -165,6 +195,8 @@ namespace WebApplication2.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AdresIDId");
 
                     b.ToTable("Station");
                 });
@@ -191,15 +223,49 @@ namespace WebApplication2.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Role")
-                        .HasColumnType("int");
+                    b.Property<long?>("RoleId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Surname")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("RoleId");
+
                     b.ToTable("User");
+                });
+
+            modelBuilder.Entity("WebApplication2.Models.Comment", b =>
+                {
+                    b.HasOne("WebApplication2.Models.Station", "Station")
+                        .WithMany()
+                        .HasForeignKey("StationId");
+
+                    b.HasOne("WebApplication2.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("WebApplication2.Models.History", b =>
+                {
+                    b.HasOne("WebApplication2.Models.FuelGrade", "FuelGrade")
+                        .WithMany()
+                        .HasForeignKey("FuelGradeId");
+                });
+
+            modelBuilder.Entity("WebApplication2.Models.Station", b =>
+                {
+                    b.HasOne("WebApplication2.Models.Address", "AdresID")
+                        .WithMany()
+                        .HasForeignKey("AdresIDId");
+                });
+
+            modelBuilder.Entity("WebApplication2.Models.User", b =>
+                {
+                    b.HasOne("WebApplication2.Models.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId");
                 });
 #pragma warning restore 612, 618
         }

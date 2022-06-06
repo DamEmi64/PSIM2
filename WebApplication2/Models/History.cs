@@ -32,18 +32,19 @@ namespace WebApplication2.Models
         /// Commented station
         /// </summary>
         /// <value>Commented station</value>
-        [Required]
         [Key]
+        public int ID { get; set; }
+        [Required]
         [DataMember(Name="Station_ID")]
-        public int? StationID { get; set; }
+        public int Station { get; set; }
 
         /// <summary>
         /// Users key
         /// </summary>
         /// <value>Users key</value>
-        [Key]
+        [Required]
         [DataMember(Name="User_ID")]
-        public int? UserID { get; set; }
+        public int User { get; set; }
 
         /// <summary>
         /// Fuel avaliability key
@@ -100,7 +101,7 @@ namespace WebApplication2.Models
         /// <value>Fuel grade key</value>
 
         [DataMember(Name="Fuel_grade_ID")]
-        public int? FuelGradeID { get; set; }
+        public FuelGrade FuelGrade { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -110,15 +111,15 @@ namespace WebApplication2.Models
         {
             var sb = new StringBuilder();
             sb.Append("class History {\n");
-            sb.Append("  StationID: ").Append(StationID).Append("\n");
-            sb.Append("  UserID: ").Append(UserID).Append("\n");
+            sb.Append("  StationID: ").Append(Station).Append("\n");
+            sb.Append("  UserID: ").Append(User).Append("\n");
             sb.Append("  FuelAvaliabilityID: ").Append(FuelAvaliabilityID).Append("\n");
             sb.Append("  Prize95: ").Append(Prize95).Append("\n");
             sb.Append("  Prize98: ").Append(Prize98).Append("\n");
             sb.Append("  PrizeLPG: ").Append(PrizeLPG).Append("\n");
             sb.Append("  PrizeDiesel: ").Append(PrizeDiesel).Append("\n");
             sb.Append("  Date: ").Append(Date).Append("\n");
-            sb.Append("  FuelGradeID: ").Append(FuelGradeID).Append("\n");
+            sb.Append("  FuelGradeID: ").Append(FuelGrade.Id).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -156,14 +157,14 @@ namespace WebApplication2.Models
 
             return 
                 (
-                    StationID == other.StationID ||
-                    StationID != null &&
-                    StationID.Equals(other.StationID)
+                    Station == other.Station ||
+                    Station != null &&
+                    Station.Equals(other.Station)
                 ) && 
                 (
-                    UserID == other.UserID ||
-                    UserID != null &&
-                    UserID.Equals(other.UserID)
+                    User == other.User ||
+                    User != null &&
+                    User.Equals(other.User)
                 ) && 
                 (
                     FuelAvaliabilityID == other.FuelAvaliabilityID ||
@@ -196,9 +197,9 @@ namespace WebApplication2.Models
                     Date.Equals(other.Date)
                 ) && 
                 (
-                    FuelGradeID == other.FuelGradeID ||
-                    FuelGradeID != null &&
-                    FuelGradeID.Equals(other.FuelGradeID)
+                    FuelGrade == other.FuelGrade ||
+                    FuelGrade != null &&
+                    FuelGrade.Equals(other.FuelGrade)
                 );
         }
 
@@ -212,10 +213,10 @@ namespace WebApplication2.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                    if (StationID != null)
-                    hashCode = hashCode * 59 + StationID.GetHashCode();
-                    if (UserID != null)
-                    hashCode = hashCode * 59 + UserID.GetHashCode();
+                    if (Station != null)
+                    hashCode = hashCode * 59 + Station.GetHashCode();
+                    if (User != null)
+                    hashCode = hashCode * 59 + User.GetHashCode();
                     if (FuelAvaliabilityID != null)
                     hashCode = hashCode * 59 + FuelAvaliabilityID.GetHashCode();
                     if (Prize95 != null)
@@ -228,8 +229,8 @@ namespace WebApplication2.Models
                     hashCode = hashCode * 59 + PrizeDiesel.GetHashCode();
                     if (Date != null)
                     hashCode = hashCode * 59 + Date.GetHashCode();
-                    if (FuelGradeID != null)
-                    hashCode = hashCode * 59 + FuelGradeID.GetHashCode();
+                    if (FuelGrade != null)
+                    hashCode = hashCode * 59 + FuelGrade.GetHashCode();
                 return hashCode;
             }
         }
