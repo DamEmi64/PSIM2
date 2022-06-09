@@ -38,6 +38,7 @@ namespace WebApplication2.Controllers
         {
             _context = context;
         }
+
         /// <summary>
         /// Add a new gas Station to the database
         /// </summary>
@@ -135,13 +136,13 @@ namespace WebApplication2.Controllers
         /// <response code="405">Invalid input</response>
         [HttpGet]
         [Route("/Station/com/{stationID}")]
-        public virtual IActionResult ShowComments([FromRoute][Required] int? stationID)
+        public virtual IActionResult ShowComments([Required] int? stationID)
         {
             var comments = _context.Comment.Where(x => x.Station.Id == stationID).ToList();
 
             if (comments != null)
             {
-                return StatusCode(200);
+                return Ok(comments);
             }
             //TODO: Change the data returned
             throw new NotImplementedException();
@@ -199,7 +200,7 @@ namespace WebApplication2.Controllers
 
             if (stations != null)
             {
-                return StatusCode(200);
+                return Ok(stations);
             }
             //TODO: Change the data returned
             throw new NotImplementedException();
