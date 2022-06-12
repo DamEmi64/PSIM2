@@ -162,27 +162,30 @@ namespace WebApplication2.Controllers
         /// </summary>
 
         /// <param name="id">id stacji</param>
-        /// <response code="200">Info about station</response>
+        /// <response code="0">Info about station</response>
         /// <response code="405">Invalid input</response>
         [HttpGet]
         [Route("/Station/info/{id}")]
         public virtual IActionResult ShowStationinfo([FromRoute][Required] int? id)
         {
+            var station = _context.Station.Where(x => x.Id == id).FirstOrDefault();
+            if (station == null) return StatusCode(405);
+            return StatusCode(0, station);
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(200, default(Station));
 
             //TODO: Uncomment the next line to return response 405 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(405);
 
-            string exampleJson = null;
+/*            string exampleJson = null;
             exampleJson = "<Station>\n  <id>123456789</id>\n  <Name>Orlen</Name>\n  <Open_hours>8:00 22:00</Open_hours>\n  <Location>93.12421 65.12652</Location>\n  <Adres_ID>12</Adres_ID>\n  <Grade>12</Grade>\n</Station>";
             exampleJson = "{\"empty\": false}";
 
             var example = exampleJson != null
             ? JsonConvert.DeserializeObject<Station>(exampleJson)
-            : default(Station);
+            : default(Station);*/
             //TODO: Change the data returned
-            return new ObjectResult(example);
+           // return new ObjectResult(example);
         }
 
         /// <summary>
@@ -196,7 +199,7 @@ namespace WebApplication2.Controllers
         [Route("/Station/near")]
         public virtual IActionResult ShownearStation(String userStreet)
         {
-            var stations = _context.Station.Where(x => userStreet.Contains(x.AdresID.Street)).ToList();
+            var stations = _context.Station.Where(x => userStreet.Contains(x.Address.Street)).ToList();
 
             if (stations != null)
             {

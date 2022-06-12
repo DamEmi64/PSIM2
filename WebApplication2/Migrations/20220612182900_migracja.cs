@@ -2,7 +2,7 @@
 
 namespace PSIM2.Migrations
 {
-    public partial class Migracja : Migration
+    public partial class migracja : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -75,42 +75,16 @@ namespace PSIM2.Migrations
                     Name = table.Column<string>(nullable: false),
                     OpenHours = table.Column<string>(nullable: false),
                     Location = table.Column<string>(nullable: true),
-                    AdresIDId = table.Column<int>(nullable: true),
+                    AddressId = table.Column<int>(nullable: true),
                     Grade = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Station", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Station_Address_AdresIDId",
-                        column: x => x.AdresIDId,
+                        name: "FK_Station_Address_AddressId",
+                        column: x => x.AddressId,
                         principalTable: "Address",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "History",
-                columns: table => new
-                {
-                    Station = table.Column<int>(nullable: false),
-                    User = table.Column<int>(nullable: false),
-                    ID = table.Column<int>(nullable: false),
-                    FuelAvaliabilityID = table.Column<int>(nullable: false),
-                    Prize95 = table.Column<decimal>(nullable: true),
-                    Prize98 = table.Column<decimal>(nullable: true),
-                    PrizeLPG = table.Column<decimal>(nullable: true),
-                    PrizeDiesel = table.Column<decimal>(nullable: true),
-                    Date = table.Column<string>(nullable: true),
-                    FuelGradeId = table.Column<long>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_History", x => new { x.User, x.Station });
-                    table.ForeignKey(
-                        name: "FK_History_FuelGrade_FuelGradeId",
-                        column: x => x.FuelGradeId,
-                        principalTable: "FuelGrade",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -167,6 +141,45 @@ namespace PSIM2.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "History",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StationId = table.Column<long>(nullable: false),
+                    UserId = table.Column<long>(nullable: false),
+                    FuelAvaliabilityID = table.Column<int>(nullable: false),
+                    Prize95 = table.Column<decimal>(nullable: true),
+                    Prize98 = table.Column<decimal>(nullable: true),
+                    PrizeLPG = table.Column<decimal>(nullable: true),
+                    PrizeDiesel = table.Column<decimal>(nullable: true),
+                    Date = table.Column<string>(nullable: true),
+                    FuelGradeId = table.Column<long>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_History", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_History_FuelGrade_FuelGradeId",
+                        column: x => x.FuelGradeId,
+                        principalTable: "FuelGrade",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_History_Station_StationId",
+                        column: x => x.StationId,
+                        principalTable: "Station",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_History_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Comment_StationId",
                 table: "Comment",
@@ -183,9 +196,19 @@ namespace PSIM2.Migrations
                 column: "FuelGradeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Station_AdresIDId",
+                name: "IX_History_StationId",
+                table: "History",
+                column: "StationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_History_UserId",
+                table: "History",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Station_AddressId",
                 table: "Station",
-                column: "AdresIDId");
+                column: "AddressId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_RoleId",
@@ -205,13 +228,13 @@ namespace PSIM2.Migrations
                 name: "History");
 
             migrationBuilder.DropTable(
+                name: "FuelGrade");
+
+            migrationBuilder.DropTable(
                 name: "Station");
 
             migrationBuilder.DropTable(
                 name: "User");
-
-            migrationBuilder.DropTable(
-                name: "FuelGrade");
 
             migrationBuilder.DropTable(
                 name: "Address");
