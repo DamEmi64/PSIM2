@@ -25,6 +25,7 @@ namespace PSIM2.Security
         public static IDictionary<string, object> VerifyToken(string token)
         {
             return new JwtBuilder()
+                 .WithAlgorithm(new HMACSHA256Algorithm())
                  .WithSecret(_secret)
                  .MustVerifySignature()
                  .Decode<IDictionary<string, object>>(token);

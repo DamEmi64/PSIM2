@@ -39,8 +39,16 @@ namespace WebApplication2
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
                 var context = serviceScope.ServiceProvider.GetRequiredService<WebApplication2Context>();
-                
-                context.Database.Migrate();
+                //context.Database.Migrate();
+
+                if (context.Role.ToArray().Length == 0)
+                {
+                    Models.Role adminRole = new Models.Role() { IsAdmin = true, Bonuses = "", Range = 0 };
+                    Models.Role standardRole = new Models.Role() { IsAdmin = false, Bonuses = "", Range = 0 };
+                    context.Role.Add(adminRole);
+                    context.Role.Add(standardRole);
+                    context.SaveChanges();
+                }
             }
             // This middleware serves generated Swagger document as a JSON endpoint
             app.UseSwagger();

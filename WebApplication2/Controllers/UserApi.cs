@@ -56,13 +56,10 @@ namespace IO.Swagger.Controllers
                 uytkownik.Role = _context.Role.Where(x => x.Id == uytkownik.Role.Id).FirstOrDefault();
                 _context.User.Add(uytkownik);
                 _context.SaveChanges();
-                return StatusCode(200);
+                return StatusCode(200, uytkownik);
             }
             //TODO: Uncomment the next line to return response 0 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(0);
-
-
-            throw new NotImplementedException();
+            return StatusCode(400);
         }
 
         /// <summary>
@@ -142,22 +139,43 @@ namespace IO.Swagger.Controllers
         /// <response code="401">Not authenticated</response>
         /// <response code="0">successful operation</response>
         [HttpGet]
-        [Route("/User/{User_ID}")]
+        [Route("/User/{userID}")]
         [ValidateModelState]
-        public virtual IActionResult Showinfo([FromRoute][Required]int? userID, [FromHeader][Required()]string token)
+        public virtual IActionResult Showinfo([FromRoute][Required]int? userID, [FromHeader][Required]string token)
         {
-            var user = _context.User.Where(x=>x.Id==userID).FirstOrDefault();
-            if (user != null) {
-                return StatusCode(200);
+            long? requesterID;
+            try
+            {
+                requesterID = (long?)TokenManager.VerifyToken(token)["userId"];
             }
-            //TODO: Uncomment the next line to return response 401 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(401);
+            catch (Exception ex)
+            {
+                return StatusCode(401);
+            }
+            var user = _context.User.Where(x => x.Id == userID).FirstOrDefault();
 
-            //TODO: Uncomment the next line to return response 0 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(0);
-
-
-            throw new NotImplementedException();
+            if (requesterID == userID)
+            {
+                if (user != null)
+                    return StatusCode(200, user);
+                else
+                    return StatusCode(404);
+            }
+            else
+            {
+                User requester = _context.User.Where(x => x.Id == requesterID).FirstOrDefault();
+                if (requester != null && (bool)requester.Role.IsAdmin)
+                {
+                    if (user != null)
+                        return StatusCode(200, user);
+                    else
+                        return StatusCode(404);
+                }
+                else
+                {
+                    return StatusCode(403);
+                }
+            }
         }
     }
 }
