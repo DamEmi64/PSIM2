@@ -15,6 +15,7 @@ using System.ComponentModel.DataAnnotations;
 using WebApplication2.Models;
 using WebApplication2.Data;
 using System.Linq;
+using PSIM2.Security;
 
 namespace WebApplication2.Controllers
 {
@@ -39,10 +40,23 @@ namespace WebApplication2.Controllers
         /// <response code="401">Not authenticated</response>
         /// <response code="0">successful operation</response>
         [HttpGet]
-        [Route("/Comment/{Comment_ID}")]
+        [Route("/Comment/{commentID}")]
         public virtual IActionResult CommentCommentIDGet([FromRoute][Required] int? commentID, [FromHeader][Required()] string token)
-        {   
-
+        {
+            long? requesterID;
+            try
+            {
+                requesterID = (long?)TokenManager.VerifyToken(token)["userId"];
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(401);
+            }
+            var comment = _context.Comment.Where(x => x.Id == commentID).FirstOrDefault();
+            if (comment != null)
+            {
+                return StatusCode(200, comment);
+            }
             //TODO: Uncomment the next line to return response 401 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(401);
 
@@ -50,7 +64,7 @@ namespace WebApplication2.Controllers
             // return StatusCode(0);
 
 
-            throw new NotImplementedException();
+            return StatusCode(404);
         }
 
         /// <summary>
@@ -66,6 +80,15 @@ namespace WebApplication2.Controllers
         [Route("/comment/edit/{Comment_ID}")]
         public virtual IActionResult CommentEditCommentIDPut([FromRoute][Required] int? commentID, [FromHeader][Required()] string token, [FromBody] CommentChange commentChange)
         {
+            long? requesterID;
+            try
+            {
+                requesterID = (long?)TokenManager.VerifyToken(token)["userId"];
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(401);
+            }
             var comment = _context.Comment.Where(x => x.Id == commentID).FirstOrDefault();
             if (comment!=null)
             {
@@ -99,6 +122,15 @@ namespace WebApplication2.Controllers
 
         public virtual IActionResult CommentPost([FromHeader][Required()] string token, [FromBody] Comment comment)
         {
+            long? requesterID;
+            try
+            {
+                requesterID = (long?)TokenManager.VerifyToken(token)["userId"];
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(401);
+            }
             if (ModelState.IsValid)
             {
                 comment.Id = null;
@@ -132,6 +164,15 @@ namespace WebApplication2.Controllers
 
         public virtual IActionResult CommentRemoveCommentIDDelete([FromRoute][Required] int? commentID, [FromHeader][Required()] string token)
         {
+            long? requesterID;
+            try
+            {
+                requesterID = (long?)TokenManager.VerifyToken(token)["userId"];
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(401);
+            }
             var com = _context.Comment.Find(commentID);
             if (com != null) {
                 _context.Comment.Remove(com);

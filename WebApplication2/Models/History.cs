@@ -36,16 +36,14 @@ namespace WebApplication2.Models
         public int ID { get; set; }
         [Required]
         [DataMember(Name="Station_ID")]
-        public int Station { get; set; }
-
+        public Station Station { get; set; }
         /// <summary>
         /// Users key
         /// </summary>
         /// <value>Users key</value>
         [Required]
         [DataMember(Name="User_ID")]
-        public int User { get; set; }
-
+        public User User { get; set; }
         /// <summary>
         /// Fuel avaliability key
         /// </summary>

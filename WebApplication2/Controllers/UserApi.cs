@@ -75,6 +75,15 @@ namespace IO.Swagger.Controllers
         [ValidateModelState]
         public virtual IActionResult Delinfo([FromRoute][Required]int? userID, [FromHeader][Required()]string token)
         {
+            long? requesterID;
+            try
+            {
+                requesterID = (long?)TokenManager.VerifyToken(token)["userId"];
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(401);
+            }
             var user = _context.User.Where(x => x.Id == userID).FirstOrDefault();
             if (user != null) {
                 _context.User.Remove(user);
@@ -106,6 +115,15 @@ namespace IO.Swagger.Controllers
         [ValidateModelState]
         public virtual IActionResult Editinfo([FromRoute][Required]int? userIDEdit, [FromHeader][Required()]string token, [FromBody]UserChange userChange)
         {
+            long? requesterID;
+            try
+            {
+                requesterID = (long?)TokenManager.VerifyToken(token)["userId"];
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(401);
+            }
             var user = _context.User.Where(x => x.Id == userIDEdit).FirstOrDefault();
             if (user != null) {
                 user.Login = userChange.Login;

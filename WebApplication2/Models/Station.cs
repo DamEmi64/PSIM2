@@ -62,7 +62,7 @@ namespace WebApplication2.Models
         /// </summary>
 
         [DataMember(Name="Adres_ID")]
-        public Address AdresID { get; set; }
+        public Address Address { get; set; }
 
         /// <summary>
         /// Gets or Sets Grade
@@ -83,7 +83,7 @@ namespace WebApplication2.Models
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  OpenHours: ").Append(OpenHours).Append("\n");
             sb.Append("  Location: ").Append(Location).Append("\n");
-            sb.Append("  AdresID: ").Append(AdresID).Append("\n");
+            sb.Append("  AdresID: ").Append(Address).Append("\n");
             sb.Append("  Grade: ").Append(Grade).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -142,9 +142,9 @@ namespace WebApplication2.Models
                     Location.Equals(other.Location)
                 ) && 
                 (
-                    AdresID == other.AdresID ||
-                    AdresID != null &&
-                    AdresID.Equals(other.AdresID)
+                    Address == other.Address ||
+                    Address != null &&
+                    Address.Equals(other.Address)
                 ) && 
                 (
                     Grade == other.Grade ||
@@ -171,8 +171,8 @@ namespace WebApplication2.Models
                     hashCode = hashCode * 59 + OpenHours.GetHashCode();
                     if (Location != null)
                     hashCode = hashCode * 59 + Location.GetHashCode();
-                    if (AdresID != null)
-                    hashCode = hashCode * 59 + AdresID.GetHashCode();
+                    if (Address != null)
+                    hashCode = hashCode * 59 + Address.GetHashCode();
                     if (Grade != null)
                     hashCode = hashCode * 59 + Grade.GetHashCode();
                 return hashCode;

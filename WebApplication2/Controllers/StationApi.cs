@@ -196,7 +196,7 @@ namespace WebApplication2.Controllers
         [Route("/Station/near")]
         public virtual IActionResult ShownearStation(String userStreet)
         {
-            var stations = _context.Station.Where(x => userStreet.Contains(x.AdresID.Street)).ToList();
+            var stations = _context.Station.Where(x => userStreet.Contains(x.Address.Street)).ToList();
 
             if (stations != null)
             {

@@ -109,11 +109,10 @@ namespace PSIM2.Migrations
 
             modelBuilder.Entity("WebApplication2.Models.History", b =>
                 {
-                    b.Property<int>("User")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Station")
-                        .HasColumnType("int");
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Date")
                         .HasColumnType("nvarchar(max)");
@@ -124,9 +123,6 @@ namespace PSIM2.Migrations
 
                     b.Property<long?>("FuelGradeId")
                         .HasColumnType("bigint");
-
-                    b.Property<int>("ID")
-                        .HasColumnType("int");
 
                     b.Property<decimal?>("Prize95")
                         .HasColumnType("decimal(18,2)");
@@ -140,9 +136,19 @@ namespace PSIM2.Migrations
                     b.Property<decimal?>("PrizeLPG")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("User", "Station");
+                    b.Property<long>("StationId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("ID");
 
                     b.HasIndex("FuelGradeId");
+
+                    b.HasIndex("StationId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("History");
                 });
@@ -175,7 +181,7 @@ namespace PSIM2.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AdresIDId")
+                    b.Property<int?>("AddressId")
                         .HasColumnType("int");
 
                     b.Property<int?>("Grade")
@@ -194,7 +200,7 @@ namespace PSIM2.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AdresIDId");
+                    b.HasIndex("AddressId");
 
                     b.ToTable("Station");
                 });
@@ -250,13 +256,25 @@ namespace PSIM2.Migrations
                     b.HasOne("WebApplication2.Models.FuelGrade", "FuelGrade")
                         .WithMany()
                         .HasForeignKey("FuelGradeId");
+
+                    b.HasOne("WebApplication2.Models.Station", "Station")
+                        .WithMany()
+                        .HasForeignKey("StationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebApplication2.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("WebApplication2.Models.Station", b =>
                 {
-                    b.HasOne("WebApplication2.Models.Address", "AdresID")
+                    b.HasOne("WebApplication2.Models.Address", "Address")
                         .WithMany()
-                        .HasForeignKey("AdresIDId");
+                        .HasForeignKey("AddressId");
                 });
 
             modelBuilder.Entity("WebApplication2.Models.User", b =>
