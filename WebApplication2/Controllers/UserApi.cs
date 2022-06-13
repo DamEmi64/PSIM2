@@ -139,7 +139,7 @@ namespace IO.Swagger.Controllers
                 user.Email = userChange.Email;
                 _context.User.Update(user);
                 _context.SaveChanges();
-                return StatusCode(0);
+                return StatusCode(200, user);
 
             }
             //TODO: Uncomment the next line to return response 401 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
