@@ -10,7 +10,7 @@ using WebApplication2.Data;
 namespace PSIM2.Migrations
 {
     [DbContext(typeof(WebApplication2Context))]
-    [Migration("20220613161204_Migracja")]
+    [Migration("20220613162952_Migracja")]
     partial class Migracja
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -119,7 +119,7 @@ namespace PSIM2.Migrations
                     b.Property<string>("Date")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("FuelAvaliabilityIDId")
+                    b.Property<int>("FuelAvaliabilityId")
                         .HasColumnType("int");
 
                     b.Property<long?>("FuelGradeId")
@@ -145,7 +145,7 @@ namespace PSIM2.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("FuelAvaliabilityIDId");
+                    b.HasIndex("FuelAvaliabilityId");
 
                     b.HasIndex("FuelGradeId");
 
@@ -230,7 +230,7 @@ namespace PSIM2.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("RoleId")
+                    b.Property<long?>("RoleId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Surname")
@@ -256,9 +256,9 @@ namespace PSIM2.Migrations
 
             modelBuilder.Entity("WebApplication2.Models.History", b =>
                 {
-                    b.HasOne("WebApplication2.Models.FuelAvaliability", "FuelAvaliabilityID")
+                    b.HasOne("WebApplication2.Models.FuelAvaliability", "FuelAvaliability")
                         .WithMany()
-                        .HasForeignKey("FuelAvaliabilityIDId")
+                        .HasForeignKey("FuelAvaliabilityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -290,9 +290,7 @@ namespace PSIM2.Migrations
                 {
                     b.HasOne("WebApplication2.Models.Role", "Role")
                         .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RoleId");
                 });
 #pragma warning restore 612, 618
         }

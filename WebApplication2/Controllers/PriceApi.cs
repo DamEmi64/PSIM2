@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Authorization;
 using WebApplication2.Models;
 using WebApplication2.Data;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace IO.Swagger.Controllers
 {
@@ -44,6 +45,10 @@ namespace IO.Swagger.Controllers
         [Route("/price/edit/{price_id}")]
         public virtual IActionResult EditPrice([FromRoute][Required] int? price_id, [FromBody] History price)
         {
+            _context.History.Include(x => x.User).ToList();
+            _context.History.Include(x => x.Station).ToList();
+            _context.History.Include(x => x.FuelGrade).ToList();
+            _context.History.Include(x => x.FuelAvaliability).ToList();
             var price2 = _context.History.Where(x => x.ID == price_id).FirstOrDefault();
             if (price2 == null) return StatusCode(404);
             price2.Prize95 = price.Prize95;
@@ -52,7 +57,7 @@ namespace IO.Swagger.Controllers
             var station = _context.Station.Where(x => x.Id == price2.Station.Id).FirstOrDefault();
             if (station == null) return StatusCode(404);
             price2.Station = station;
-            var fuel = _context.FuelAvaliability.Where(x => x.Id == price2.FuelAvaliabilityID.Id).FirstOrDefault();
+            var fuel = _context.FuelAvaliability.Where(x => x.Id == price2.FuelAvaliability.Id).FirstOrDefault();
             price2.FuelGrade = _context.FuelGrade.Where(x => x.Id == price2.FuelGrade.Id).FirstOrDefault();
             if (fuel == null) return StatusCode(404);
            price2.User = _context.User.Where(x => x.Id == price2.User.Id).FirstOrDefault();
@@ -76,7 +81,11 @@ namespace IO.Swagger.Controllers
         [HttpPost]
         [Route("/{User_ID}/price/{Station_ID}")]
         public virtual IActionResult PostPrize([FromRoute][Required] int? Station_ID, [FromRoute][Required] int? User_ID, [FromBody] History price)
-        {   
+        {
+            _context.History.Include(x => x.User).ToList();
+            _context.History.Include(x => x.Station).ToList();
+            _context.History.Include(x => x.FuelGrade).ToList();
+            _context.History.Include(x => x.FuelAvaliability).ToList();
             var user = _context.User.Where(x => x.Id == User_ID).FirstOrDefault();
             if (user!=null)
             {
@@ -115,6 +124,10 @@ namespace IO.Swagger.Controllers
         [Route("/price/remove/{user_id}_{station_id}")]
         public virtual IActionResult RemovePrice([FromRoute][Required] int? user_id, [FromRoute][Required] int? station_id)
         {
+            _context.History.Include(x => x.User).ToList();
+            _context.History.Include(x => x.Station).ToList();
+            _context.History.Include(x => x.FuelGrade).ToList();
+            _context.History.Include(x => x.FuelAvaliability).ToList();
             var price = _context.History.Where(x => x.User.Id == user_id && x.Station.Id == station_id).FirstOrDefault();
             if (price != null)
             {

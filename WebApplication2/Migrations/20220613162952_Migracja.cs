@@ -100,7 +100,7 @@ namespace PSIM2.Migrations
                     Surname = table.Column<string>(nullable: true),
                     Email = table.Column<string>(nullable: true),
                     Password = table.Column<string>(nullable: true),
-                    RoleId = table.Column<long>(nullable: false),
+                    RoleId = table.Column<long>(nullable: true),
                     Locaction = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -111,7 +111,7 @@ namespace PSIM2.Migrations
                         column: x => x.RoleId,
                         principalTable: "Role",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -149,7 +149,7 @@ namespace PSIM2.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     StationId = table.Column<long>(nullable: false),
                     UserId = table.Column<long>(nullable: false),
-                    FuelAvaliabilityIDId = table.Column<int>(nullable: false),
+                    FuelAvaliabilityId = table.Column<int>(nullable: false),
                     Prize95 = table.Column<decimal>(nullable: true),
                     Prize98 = table.Column<decimal>(nullable: true),
                     PrizeLPG = table.Column<decimal>(nullable: true),
@@ -161,8 +161,8 @@ namespace PSIM2.Migrations
                 {
                     table.PrimaryKey("PK_History", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_History_FuelAvaliability_FuelAvaliabilityIDId",
-                        column: x => x.FuelAvaliabilityIDId,
+                        name: "FK_History_FuelAvaliability_FuelAvaliabilityId",
+                        column: x => x.FuelAvaliabilityId,
                         principalTable: "FuelAvaliability",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -197,9 +197,9 @@ namespace PSIM2.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_History_FuelAvaliabilityIDId",
+                name: "IX_History_FuelAvaliabilityId",
                 table: "History",
-                column: "FuelAvaliabilityIDId");
+                column: "FuelAvaliabilityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_History_FuelGradeId",

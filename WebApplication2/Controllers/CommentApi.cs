@@ -124,6 +124,7 @@ namespace WebApplication2.Controllers
 
         public virtual IActionResult CommentPost([FromHeader][Required()] string token, [FromBody] Comment comment)
         {
+            _context.Comment.Include(b => b.User).ToList();
             long? requesterID;
             try
             {
@@ -166,6 +167,7 @@ namespace WebApplication2.Controllers
 
         public virtual IActionResult CommentRemoveCommentIDDelete([FromRoute][Required] int? commentID, [FromHeader][Required()] string token)
         {
+            _context.Comment.Include(b => b.User).ToList();
             long? requesterID;
             try
             {

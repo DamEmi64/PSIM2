@@ -51,7 +51,7 @@ namespace WebApplication2.Models
         [Required]
         
         [DataMember(Name= "FuelAvaliabilityID")]
-        public FuelAvaliability FuelAvaliabilityID { get; set; }
+        public FuelAvaliability FuelAvaliability { get; set; }
 
         /// <summary>
         /// Fuel prize
@@ -111,7 +111,7 @@ namespace WebApplication2.Models
             sb.Append("class History {\n");
             sb.Append("  StationID: ").Append(Station).Append("\n");
             sb.Append("  UserID: ").Append(User).Append("\n");
-            sb.Append("  FuelAvaliabilityID: ").Append(FuelAvaliabilityID).Append("\n");
+            sb.Append("  FuelAvaliabilityID: ").Append(FuelAvaliability).Append("\n");
             sb.Append("  Prize95: ").Append(Prize95).Append("\n");
             sb.Append("  Prize98: ").Append(Prize98).Append("\n");
             sb.Append("  PrizeLPG: ").Append(PrizeLPG).Append("\n");
@@ -165,9 +165,9 @@ namespace WebApplication2.Models
                     User.Equals(other.User)
                 ) && 
                 (
-                    FuelAvaliabilityID == other.FuelAvaliabilityID ||
-                    FuelAvaliabilityID != null &&
-                    FuelAvaliabilityID.Equals(other.FuelAvaliabilityID)
+                    FuelAvaliability == other.FuelAvaliability ||
+                    FuelAvaliability != null &&
+                    FuelAvaliability.Equals(other.FuelAvaliability)
                 ) && 
                 (
                     Prize95 == other.Prize95 ||
@@ -215,8 +215,8 @@ namespace WebApplication2.Models
                     hashCode = hashCode * 59 + Station.GetHashCode();
                     if (User != null)
                     hashCode = hashCode * 59 + User.GetHashCode();
-                    if (FuelAvaliabilityID != null)
-                    hashCode = hashCode * 59 + FuelAvaliabilityID.GetHashCode();
+                    if (FuelAvaliability != null)
+                    hashCode = hashCode * 59 + FuelAvaliability.GetHashCode();
                     if (Prize95 != null)
                     hashCode = hashCode * 59 + Prize95.GetHashCode();
                     if (Prize98 != null)

@@ -35,6 +35,8 @@
     <Compile Remove="Migrations\20220613155057_Migracja.Designer.cs" />
     <Compile Remove="Migrations\20220613160416_Migracja.cs" />
     <Compile Remove="Migrations\20220613160416_Migracja.Designer.cs" />
+    <Compile Remove="Migrations\20220613161204_Migracja.cs" />
+    <Compile Remove="Migrations\20220613161204_Migracja.Designer.cs" />
     <Compile Remove="Migrations\DataMigrate.cs" />
     <Compile Remove="Migrations\DataMigrate.Designer.cs" />
   </ItemGroup>
