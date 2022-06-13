@@ -51,21 +51,21 @@ namespace WebApplication2.Controllers
         [Route("/Station/new")]
         public virtual IActionResult AddStation([FromBody] Station body)
         {
-            body.Id = null;
-            _context.Station.Add(body);
-            _context.SaveChanges();
-
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-             return StatusCode(200);
-
-            //TODO: Uncomment the next line to return response 401 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(401);
-
-            //TODO: Uncomment the next line to return response 405 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(405);
+            if (body != null)
+            {
+                body.Id = null;
+                _context.Station.Add(body);
+                _context.SaveChanges();
+                return StatusCode(200);
+            }
+                //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
 
 
-            throw new NotImplementedException();
+                //TODO: Uncomment the next line to return response 401 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
+                // return StatusCode(401);
+
+                //TODO: Uncomment the next line to return response 405 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
+                return StatusCode(405);
         }
 
         /// <summary>
@@ -111,8 +111,6 @@ namespace WebApplication2.Controllers
             //TODO: Uncomment the next line to return response 405 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(405);
 
-
-            throw new NotImplementedException();
         }
 
         /// <summary>
