@@ -12,7 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="CommentsController.cs" />
     <Compile Remove="Controllers\HomeController.cs" />
+    <Compile Remove="FuelAvaliabilitiesController.cs" />
+    <Compile Remove="FuelGradesController.cs" />
     <Compile Remove="Migrations\20220604104608_User.cs" />
     <Compile Remove="Migrations\20220604104608_User.Designer.cs" />
     <Compile Remove="Migrations\20220604111114_Station.cs" />
@@ -39,6 +42,9 @@
     <Compile Remove="Migrations\20220613161204_Migracja.Designer.cs" />
     <Compile Remove="Migrations\DataMigrate.cs" />
     <Compile Remove="Migrations\DataMigrate.Designer.cs" />
+    <Compile Remove="RolesController.cs" />
+    <Compile Remove="StationsController.cs" />
+    <Compile Remove="UsersController.cs" />
   </ItemGroup>
 
   <ItemGroup>
