@@ -51,7 +51,7 @@ namespace WebApplication2.Models
         [Required]
         
         [DataMember(Name= "FuelAvaliabilityID")]
-        public int? FuelAvaliabilityID { get; set; }
+        public FuelAvaliability FuelAvaliabilityID { get; set; }
 
         /// <summary>
         /// Fuel prize

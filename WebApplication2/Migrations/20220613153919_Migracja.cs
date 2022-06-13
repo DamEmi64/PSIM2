@@ -2,7 +2,7 @@
 
 namespace PSIM2.Migrations
 {
-    public partial class migracja : Migration
+    public partial class Migracja : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -149,7 +149,7 @@ namespace PSIM2.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     StationId = table.Column<long>(nullable: false),
                     UserId = table.Column<long>(nullable: false),
-                    FuelAvaliabilityID = table.Column<int>(nullable: false),
+                    FuelAvaliabilityIDId = table.Column<int>(nullable: false),
                     Prize95 = table.Column<decimal>(nullable: true),
                     Prize98 = table.Column<decimal>(nullable: true),
                     PrizeLPG = table.Column<decimal>(nullable: true),
@@ -160,6 +160,12 @@ namespace PSIM2.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_History", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_History_FuelAvaliability_FuelAvaliabilityIDId",
+                        column: x => x.FuelAvaliabilityIDId,
+                        principalTable: "FuelAvaliability",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_History_FuelGrade_FuelGradeId",
                         column: x => x.FuelGradeId,
@@ -189,6 +195,11 @@ namespace PSIM2.Migrations
                 name: "IX_Comment_UserId",
                 table: "Comment",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_History_FuelAvaliabilityIDId",
+                table: "History",
+                column: "FuelAvaliabilityIDId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_History_FuelGradeId",
@@ -222,10 +233,10 @@ namespace PSIM2.Migrations
                 name: "Comment");
 
             migrationBuilder.DropTable(
-                name: "FuelAvaliability");
+                name: "History");
 
             migrationBuilder.DropTable(
-                name: "History");
+                name: "FuelAvaliability");
 
             migrationBuilder.DropTable(
                 name: "FuelGrade");

@@ -43,7 +43,21 @@ namespace IO.Swagger.Controllers
         [HttpPut]
         [Route("/price/edit/{price_id}")]
         public virtual IActionResult EditPrice([FromRoute][Required] int? price_id, [FromBody] History price)
-        {  
+        {
+            var price2 = _context.History.Where(x => x.ID == price_id).FirstOrDefault();
+            if (price2 == null) return StatusCode(404);
+            price2.Prize95 = price.Prize95;
+            price2.Prize98 = price.Prize98;
+            price2.PrizeDiesel = price.PrizeLPG;
+            var station = _context.Station.Where(x => x.Id == price2.Station.Id).FirstOrDefault();
+            if (station == null) return StatusCode(404);
+            price2.Station = station;
+            var fuel = _context.FuelAvaliability.Where(x => x.Id == price2.FuelAvaliabilityID.Id).FirstOrDefault();
+            price2.FuelGrade = _context.FuelGrade.Where(x => x.Id == price2.FuelGrade.Id).FirstOrDefault();
+            if (fuel == null) return StatusCode(404);
+           price2.User = _context.User.Where(x => x.Id == price2.User.Id).FirstOrDefault();
+            _context.History.Update(price2);
+            return StatusCode(200);
             //TODO: Uncomment the next line to return response 0 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(0);
 

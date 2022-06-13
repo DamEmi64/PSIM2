@@ -117,8 +117,7 @@ namespace PSIM2.Migrations
                     b.Property<string>("Date")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("FuelAvaliabilityID")
-                        .IsRequired()
+                    b.Property<int>("FuelAvaliabilityIDId")
                         .HasColumnType("int");
 
                     b.Property<long?>("FuelGradeId")
@@ -143,6 +142,8 @@ namespace PSIM2.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("FuelAvaliabilityIDId");
 
                     b.HasIndex("FuelGradeId");
 
@@ -253,6 +254,12 @@ namespace PSIM2.Migrations
 
             modelBuilder.Entity("WebApplication2.Models.History", b =>
                 {
+                    b.HasOne("WebApplication2.Models.FuelAvaliability", "FuelAvaliabilityID")
+                        .WithMany()
+                        .HasForeignKey("FuelAvaliabilityIDId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("WebApplication2.Models.FuelGrade", "FuelGrade")
                         .WithMany()
                         .HasForeignKey("FuelGradeId");

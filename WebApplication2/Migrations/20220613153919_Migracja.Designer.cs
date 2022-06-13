@@ -10,8 +10,8 @@ using WebApplication2.Data;
 namespace PSIM2.Migrations
 {
     [DbContext(typeof(WebApplication2Context))]
-    [Migration("20220612182900_migracja")]
-    partial class migracja
+    [Migration("20220613153919_Migracja")]
+    partial class Migracja
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -119,8 +119,7 @@ namespace PSIM2.Migrations
                     b.Property<string>("Date")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("FuelAvaliabilityID")
-                        .IsRequired()
+                    b.Property<int>("FuelAvaliabilityIDId")
                         .HasColumnType("int");
 
                     b.Property<long?>("FuelGradeId")
@@ -145,6 +144,8 @@ namespace PSIM2.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("FuelAvaliabilityIDId");
 
                     b.HasIndex("FuelGradeId");
 
@@ -255,6 +256,12 @@ namespace PSIM2.Migrations
 
             modelBuilder.Entity("WebApplication2.Models.History", b =>
                 {
+                    b.HasOne("WebApplication2.Models.FuelAvaliability", "FuelAvaliabilityID")
+                        .WithMany()
+                        .HasForeignKey("FuelAvaliabilityIDId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("WebApplication2.Models.FuelGrade", "FuelGrade")
                         .WithMany()
                         .HasForeignKey("FuelGradeId");
