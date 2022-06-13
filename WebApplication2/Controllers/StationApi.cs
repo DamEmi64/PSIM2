@@ -80,8 +80,28 @@ namespace WebApplication2.Controllers
         [HttpPut]
         [Route("/Station/edit/{id}")]
         public virtual IActionResult EditStation([FromRoute][Required] int? id, [FromBody] Station body)
-        {    
-            
+        {
+            var station = _context.Station.Where(x => x.Id == id).FirstOrDefault();
+            if (station != null)
+            {
+                station.Name = body.Name;
+                station.Location = body.Location;
+                station.OpenHours = body.OpenHours;
+                station.Grade = body.Grade;
+
+
+                _context.Station.Update(station);
+                _context.SaveChanges();
+                return StatusCode(200);
+            }
+            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
+            // return StatusCode(200);
+
+            //TODO: Uncomment the next line to return response 401 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
+            // return StatusCode(401);
+
+            //TODO: Uncomment the next line to return response 405 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
+            return StatusCode(405);
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(200);
 
@@ -118,13 +138,11 @@ namespace WebApplication2.Controllers
             // return StatusCode(200);
 
             //TODO: Uncomment the next line to return response 401 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(401);
+             return StatusCode(401);
 
             //TODO: Uncomment the next line to return response 405 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(405);
 
-
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -146,7 +164,7 @@ namespace WebApplication2.Controllers
                 return Ok(comments);
             }
             //TODO: Change the data returned
-            throw new NotImplementedException();
+ 
 
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(200, default(Comment));
@@ -155,7 +173,7 @@ namespace WebApplication2.Controllers
             // return StatusCode(401);
 
             //TODO: Uncomment the next line to return response 405 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(405);
+             return StatusCode(405);
         }
 
         /// <summary>
@@ -207,12 +225,12 @@ namespace WebApplication2.Controllers
                 return Ok(stations);
             }
             //TODO: Change the data returned
-            throw new NotImplementedException();
+
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(200, default(Station));
 
             //TODO: Uncomment the next line to return response 403 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(403);
+             return StatusCode(403);
 
             //TODO: Change the data returned
 
