@@ -57,6 +57,8 @@ namespace IO.Swagger.Controllers
                 uytkownik.Role = _context.Role.Where(x => x.Id == uytkownik.Role.Id).FirstOrDefault();
                 if (uytkownik.Password.Length < 8)
                     return StatusCode(400, "Password too short");
+                if (_context.User.Where(x => x.Email == uytkownik.Email).FirstOrDefault() != null)
+                    return StatusCode(409, "Email already registered");
                 uytkownik.Password = PasswordManager.HashPassword(uytkownik.Password, 1001, 70);
                 _context.User.Add(uytkownik);
                 _context.SaveChanges();
