@@ -18,6 +18,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApplication2.Models
 { 
@@ -74,8 +75,8 @@ namespace WebApplication2.Models
         /// </summary>
         /// <value>Klucz obcy do roli</value>
 
-        [DataMember(Name="Role")]
-        public Role Role { get; set; }
+        [DataMember(Name = "Role")]
+        public virtual Role Role { get; set; }
 
         /// <summary>
         /// Gets or Sets Locaction

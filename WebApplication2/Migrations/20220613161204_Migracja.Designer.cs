@@ -10,7 +10,7 @@ using WebApplication2.Data;
 namespace PSIM2.Migrations
 {
     [DbContext(typeof(WebApplication2Context))]
-    [Migration("20220613153919_Migracja")]
+    [Migration("20220613161204_Migracja")]
     partial class Migracja
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -230,7 +230,7 @@ namespace PSIM2.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long?>("RoleId")
+                    b.Property<long>("RoleId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Surname")
@@ -290,7 +290,9 @@ namespace PSIM2.Migrations
                 {
                     b.HasOne("WebApplication2.Models.Role", "Role")
                         .WithMany()
-                        .HasForeignKey("RoleId");
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

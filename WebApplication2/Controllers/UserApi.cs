@@ -21,6 +21,7 @@ using WebApplication2.Models;
 using WebApplication2.Data;
 using System.Linq;
 using PSIM2.Security;
+using Microsoft.EntityFrameworkCore;
 
 namespace IO.Swagger.Controllers
 { 
@@ -161,6 +162,7 @@ namespace IO.Swagger.Controllers
         [ValidateModelState]
         public virtual IActionResult Showinfo([FromRoute][Required]int? userID, [FromHeader][Required]string token)
         {
+            _context.User.Include(b => b.Role).ToList();
             long? requesterID;
             try
             {
@@ -171,7 +173,6 @@ namespace IO.Swagger.Controllers
                 return StatusCode(401);
             }
             var user = _context.User.Where(x => x.Id == userID).FirstOrDefault();
-
             if (requesterID == userID)
             {
                 if (user != null)

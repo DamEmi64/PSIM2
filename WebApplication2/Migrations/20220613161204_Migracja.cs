@@ -100,7 +100,7 @@ namespace PSIM2.Migrations
                     Surname = table.Column<string>(nullable: true),
                     Email = table.Column<string>(nullable: true),
                     Password = table.Column<string>(nullable: true),
-                    RoleId = table.Column<long>(nullable: true),
+                    RoleId = table.Column<long>(nullable: false),
                     Locaction = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -111,7 +111,7 @@ namespace PSIM2.Migrations
                         column: x => x.RoleId,
                         principalTable: "Role",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

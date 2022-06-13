@@ -76,7 +76,7 @@ namespace IO.Swagger.Controllers
         [HttpPost]
         [Route("/{User_ID}/price/{Station_ID}")]
         public virtual IActionResult PostPrize([FromRoute][Required] int? Station_ID, [FromRoute][Required] int? User_ID, [FromBody] History price)
-        {
+        {   
             var user = _context.User.Where(x => x.Id == User_ID).FirstOrDefault();
             if (user!=null)
             {

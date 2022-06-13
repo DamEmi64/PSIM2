@@ -16,6 +16,7 @@ using WebApplication2.Models;
 using WebApplication2.Data;
 using System.Linq;
 using PSIM2.Security;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApplication2.Controllers
 {
@@ -77,9 +78,10 @@ namespace WebApplication2.Controllers
         /// <response code="401">Not authenticated</response>
         /// <response code="0">successful operation</response>
         [HttpPut]
-        [Route("/comment/edit/{Comment_ID}")]
+        [Route("/comment/edit/{commentID}")]
         public virtual IActionResult CommentEditCommentIDPut([FromRoute][Required] int? commentID, [FromHeader][Required()] string token, [FromBody] CommentChange commentChange)
         {
+            _context.Comment.Include(b => b.User).ToList();
             long? requesterID;
             try
             {
