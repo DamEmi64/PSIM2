@@ -8,7 +8,18 @@ namespace PSIM2.Security
 {
     public class PasswordManager
     {
-        private static string salt = "casd7ch283eh9us9becw2";
+        private static string salt = "sMVFZFGojjT3KL+UvJQGJAbWAhMUHw5YHdw1rFyHlGNOmA3lyVTouye9A7AWvNpGEAegBzIDFTKKuTknl5t6d7DrRNBVRw==";
+        private static string GenerateSalt(int nSalt)
+        {
+            var saltBytes = new byte[nSalt];
+
+            using (var provider = new RNGCryptoServiceProvider())
+            {
+                provider.GetNonZeroBytes(saltBytes);
+            }
+
+            return Convert.ToBase64String(saltBytes);
+        }
 
         public static string HashPassword(string password, int nIterations, int nHash)
         {
