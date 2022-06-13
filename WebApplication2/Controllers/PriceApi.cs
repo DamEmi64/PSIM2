@@ -90,27 +90,18 @@ namespace IO.Swagger.Controllers
             if (user!=null)
             {
                 var station = _context.Station.Where(x => x.Id == Station_ID).FirstOrDefault();
-                if (station == null) return StatusCode(404); 
+                if (station == null) return StatusCode(404, "Station not found");
+                var availability = _context.FuelAvaliability.Where(x => x.Id == price.FuelAvaliability.Id).FirstOrDefault();
+                if (availability == null) return StatusCode(404, "Fuel availability not found");
+                price.FuelGrade.Id = null;
                 price.Station = station;
                 price.User = user;
+                price.FuelAvaliability = availability;
                 _context.History.Add(price);
                 _context.SaveChanges();
+                return StatusCode(200, price);
             }
-            
-            _context.SaveChanges();
-            //TODO: Uncomment the next line to return response 0 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(0, default(History));
-            /*
-                        string exampleJson = null;
-                        exampleJson = "<History>\n  <Station_ID>123456789</Station_ID>\n  <User_ID>123456789</User_ID>\n  <Fuel_avaliability_ID>123456789</Fuel_avaliability_ID>\n  <Prize_95>8.0</Prize_95>\n  <Prize_98>8.0</Prize_98>\n  <Prize_LPG>8.0</Prize_LPG>\n  <Prize_Diesel>8.0</Prize_Diesel>\n  <Date>aeiou</Date>\n  <Fuel_grade_ID>123456789</Fuel_grade_ID>\n</History>";
-                        exampleJson = "{\"empty\": false}";
-
-                        var example = exampleJson != null
-                        ? JsonConvert.DeserializeObject<History>(exampleJson)
-                        : default(History);*/
-            //TODO: Change the data returned
-            return StatusCode(500);
-            //  return new ObjectResult(example);
+            return StatusCode(404, "User not found");
         }
 
         /// <summary>

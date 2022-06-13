@@ -59,7 +59,7 @@ namespace IO.Swagger.Controllers
                     return StatusCode(400, "Password too short");
                 if (_context.User.Where(x => x.Email == uytkownik.Email).FirstOrDefault() != null)
                     return StatusCode(409, "Email already registered");
-                uytkownik.Password = PasswordManager.HashPassword(uytkownik.Password, 1001, 70);
+                uytkownik.Password = PasswordManager.HashPassword(uytkownik.Password);
                 _context.User.Add(uytkownik);
                 _context.SaveChanges();
                 return StatusCode(200, uytkownik);
@@ -81,6 +81,7 @@ namespace IO.Swagger.Controllers
         [ValidateModelState]
         public virtual IActionResult Delinfo([FromRoute][Required]int? userID, [FromHeader][Required()]string token)
         {
+            _context.User.Include(b => b.Role).ToList();
             long? requesterID;
             try
             {
@@ -91,20 +92,28 @@ namespace IO.Swagger.Controllers
                 return StatusCode(401);
             }
             var user = _context.User.Where(x => x.Id == userID).FirstOrDefault();
-            if (user != null) {
-                _context.User.Remove(user);
-                _context.SaveChanges();
-                return StatusCode(200);
+            if (user == null)
+                return StatusCode(404);
+            if (requesterID == userID)
+            {
+                    _context.User.Remove(user);
+                    _context.SaveChanges();
+                    return StatusCode(200);
             }
-
-            //TODO: Uncomment the next line to return response 401 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(401);
-
-            //TODO: Uncomment the next line to return response 0 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(0);
-
-
-            throw new NotImplementedException();
+            else
+            {
+                User requester = _context.User.Where(x => x.Id == requesterID).FirstOrDefault();
+                if (requester != null && (bool)requester.Role.IsAdmin)
+                {
+                        _context.User.Remove(user);
+                        _context.SaveChanges();
+                        return StatusCode(200);
+                }
+                else
+                {
+                    return StatusCode(403);
+                }
+            }
         }
 
         /// <summary>
@@ -133,7 +142,11 @@ namespace IO.Swagger.Controllers
             var user = _context.User.Where(x => x.Id == userIDEdit).FirstOrDefault();
             if (user != null) {
                 user.Login = userChange.Login;
-                user.Password = userChange.Passowrd;
+                if (userChange.Passowrd.Length < 8)
+                    return StatusCode(400, "Password too short");
+                if (_context.User.Where(x => x.Email == userChange.Email && x.Id != userIDEdit).FirstOrDefault() != null)
+                    return StatusCode(409, "Email already registered");
+                user.Password = PasswordManager.HashPassword(userChange.Passowrd);
                 user.Locaction = userChange.Locaction;
                 user.Role = userChange.Role;
                 user.Surname = userChange.Surname;

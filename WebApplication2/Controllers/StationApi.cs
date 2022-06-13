@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Authorization;
 using WebApplication2.Models;
 using WebApplication2.Data;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApplication2.Controllers
 { 
@@ -155,6 +156,8 @@ namespace WebApplication2.Controllers
         [Route("/Station/com/{stationID}")]
         public virtual IActionResult ShowComments([Required] int? stationID)
         {
+            _context.Comment.Include(b => b.User).ToList();
+            _context.Comment.Include(b => b.Station).ToList();
             var comments = _context.Comment.Where(x => x.Station.Id == stationID).ToList();
 
             if (comments != null)

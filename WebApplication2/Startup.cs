@@ -49,6 +49,20 @@ namespace WebApplication2
                     context.Role.Add(standardRole);
                     context.SaveChanges();
                 }
+                if (context.FuelAvaliability.ToArray().Length == 0)
+                {
+                    Models.FuelAvaliability avaliability;
+                    foreach (bool b1 in new bool[2] { false, true })
+                        foreach (bool b2 in new bool[2] { false, true })
+                            foreach (bool b3 in new bool[2] { false, true })
+                                foreach (bool b4 in new bool[2] { false, true })
+                                {
+                                    avaliability = new Models.FuelAvaliability() { Avaliable95 = b1, Avaliable98 = b2, AvaliableDiesel = b3, AvaliableLPG = b4 };
+                                    context.FuelAvaliability.Add(avaliability);
+                                }
+
+                    context.SaveChanges();
+                }
             }
             // This middleware serves generated Swagger document as a JSON endpoint
             app.UseSwagger();

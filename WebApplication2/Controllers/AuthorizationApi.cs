@@ -54,7 +54,7 @@ namespace WebApplication2.Controllers
                 return StatusCode(400, "Bad login details");
             }
             User user = _context.User.FirstOrDefault(user => user.Login == login._Login);
-            string hash = PasswordManager.HashPassword(login.Password, 1001, 70);
+            string hash = PasswordManager.HashPassword(login.Password);
             if (user == null || user.Password != hash) //for security reasons do not inform requester whether its wrong login or password
             {
                 return StatusCode(404, "User not found");

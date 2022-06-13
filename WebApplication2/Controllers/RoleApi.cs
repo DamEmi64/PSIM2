@@ -48,11 +48,12 @@ namespace WebApplication2.Controllers
         public virtual IActionResult AddTag([FromBody] Role body)
         {
             body.Id = null;
-            _context.Role.Add(body);
+            Role newRole = new Role() { Id = body.Id, Bonuses = body.Bonuses, IsAdmin = body.IsAdmin, Range = body.Range };
+            _context.Role.Add(newRole);
             _context.SaveChanges();
 
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-             return StatusCode(200);
+             return StatusCode(200, newRole);
 
             //TODO: Uncomment the next line to return response 401 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(401);
@@ -85,19 +86,9 @@ namespace WebApplication2.Controllers
                 role.Bonuses = body.Bonuses;
                 _context.Role.Update(role);
                 _context.SaveChanges();
-                return StatusCode(200);
+                return StatusCode(200, role);
             }
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200);
-
-            //TODO: Uncomment the next line to return response 401 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(401);
-
-            //TODO: Uncomment the next line to return response 405 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(405);
-
-
-            throw new NotImplementedException();
+             return StatusCode(404);
         }
 
         /// <summary>
@@ -117,19 +108,9 @@ namespace WebApplication2.Controllers
             {
                 _context.Role.Remove(tag);
                 _context.SaveChanges();
-                return StatusCode(200);
+                return StatusCode(200, tag);
             }
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200);
-
-            //TODO: Uncomment the next line to return response 401 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(401);
-
-            //TODO: Uncomment the next line to return response 405 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(405);
-
-
-            throw new NotImplementedException();
+            return StatusCode(404);
         }
     }
 }

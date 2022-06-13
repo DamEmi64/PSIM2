@@ -21,13 +21,13 @@ namespace PSIM2.Security
             return Convert.ToBase64String(saltBytes);
         }
 
-        public static string HashPassword(string password, int nIterations, int nHash)
+        public static string HashPassword(string password)
         {
             var saltBytes = Convert.FromBase64String(salt);
 
-            using (var rfc2898DeriveBytes = new Rfc2898DeriveBytes(password, saltBytes, nIterations))
+            using (var rfc2898DeriveBytes = new Rfc2898DeriveBytes(password, saltBytes, 1001))
             {
-                return Convert.ToBase64String(rfc2898DeriveBytes.GetBytes(nHash));
+                return Convert.ToBase64String(rfc2898DeriveBytes.GetBytes(70));
             }
         }
     }

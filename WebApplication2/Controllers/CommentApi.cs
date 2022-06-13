@@ -42,28 +42,13 @@ namespace WebApplication2.Controllers
         /// <response code="0">successful operation</response>
         [HttpGet]
         [Route("/Comment/{commentID}")]
-        public virtual IActionResult CommentCommentIDGet([FromRoute][Required] int? commentID, [FromHeader][Required()] string token)
+        public virtual IActionResult CommentCommentIDGet([FromRoute][Required] int? commentID)
         {
-            long? requesterID;
-            try
-            {
-                requesterID = (long?)TokenManager.VerifyToken(token)["userId"];
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(401);
-            }
             var comment = _context.Comment.Where(x => x.Id == commentID).FirstOrDefault();
             if (comment != null)
             {
                 return StatusCode(200, comment);
             }
-            //TODO: Uncomment the next line to return response 401 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(401);
-
-            //TODO: Uncomment the next line to return response 0 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(0);
-
 
             return StatusCode(404);
         }
@@ -78,14 +63,18 @@ namespace WebApplication2.Controllers
         /// <response code="401">Not authenticated</response>
         /// <response code="0">successful operation</response>
         [HttpPut]
-        [Route("/comment/edit/{commentID}")]
+        [Route("/comment/{commentID}")]
         public virtual IActionResult CommentEditCommentIDPut([FromRoute][Required] int? commentID, [FromHeader][Required()] string token, [FromBody] CommentChange commentChange)
         {
             _context.Comment.Include(b => b.User).ToList();
+            _context.Comment.Include(b => b.Station).ToList();
+            _context.User.Include(b => b.Role).ToList();
             long? requesterID;
+            User requester;
             try
             {
                 requesterID = (long?)TokenManager.VerifyToken(token)["userId"];
+                requester = _context.User.Find(requesterID);
             }
             catch (Exception ex)
             {
@@ -99,16 +88,9 @@ namespace WebApplication2.Controllers
                 comment.Text = commentChange.Text;
                 _context.Comment.Update(comment);
                 _context.SaveChanges();
-                return StatusCode(0);
+                return StatusCode(200, comment);
             }
-            //TODO: Uncomment the next line to return response 401 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(401);
-
-            //TODO: Uncomment the next line to return response 0 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // 
-
-
-            throw new NotImplementedException();
+            return StatusCode(404);
         }
 
         /// <summary>
@@ -129,6 +111,8 @@ namespace WebApplication2.Controllers
             try
             {
                 requesterID = (long?)TokenManager.VerifyToken(token)["userId"];
+                if (requesterID == null || requesterID != comment.User.Id)
+                    return StatusCode(403);
             }
             catch (Exception ex)
             {
@@ -141,17 +125,9 @@ namespace WebApplication2.Controllers
                 comment.User = _context.User.Where(x => x.Id == comment.User.Id).FirstOrDefault();
                 _context.Add(comment);
                 _context.SaveChanges();
-                return StatusCode(0);
+                return StatusCode(200, comment);
             }
             else return StatusCode(401);
-            //TODO: Uncomment the next line to return response 401 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(401);
-
-            //TODO: Uncomment the next line to return response 0 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // 
-
-
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -163,34 +139,34 @@ namespace WebApplication2.Controllers
         /// <response code="401">Not authenticated</response>
         /// <response code="0">successful operation</response>
         [HttpDelete]
-        [Route("/comment/remove/{commentID}")]
+        [Route("/comment/{commentID}")]
 
         public virtual IActionResult CommentRemoveCommentIDDelete([FromRoute][Required] int? commentID, [FromHeader][Required()] string token)
         {
             _context.Comment.Include(b => b.User).ToList();
+            _context.User.Include(b => b.Role).ToList();
             long? requesterID;
+            User requester;
             try
             {
                 requesterID = (long?)TokenManager.VerifyToken(token)["userId"];
+                requester = _context.User.Find(requesterID);
             }
             catch (Exception ex)
             {
                 return StatusCode(401);
             }
-            var com = _context.Comment.Find(commentID);
+            var com = _context.Comment.FirstOrDefault(x => x.Id == commentID);
             if (com != null) {
                 _context.Comment.Remove(com);
                 _context.SaveChanges();
+                var requesterRole = _context.Role.FirstOrDefault(x => x.Id == requester.Role.Id);
+                bool isRequesterAdmin = (bool)requesterRole.IsAdmin;
+                if (requesterID == null || requesterID != com.User.Id)
+                    return StatusCode(403);
                 return StatusCode(200);
             }
-            //TODO: Uncomment the next line to return response 401 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(401);
-
-            //TODO: Uncomment the next line to return response 0 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(0);
-
-
-            throw new NotImplementedException();
+            return StatusCode(404);
         }
     }
 
